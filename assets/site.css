@@ -326,6 +326,16 @@ tr:last-child td{border-bottom:0}
 }
 @media (prefers-reduced-motion:reduce){.hs-slide,.hs-slide *{animation:none!important;transition:none!important}}
 
+/* App icons */
+.appicon{flex:none;display:block;border-radius:23%;box-shadow:0 8px 18px rgba(15,26,44,.18)}
+.mega .appicon{box-shadow:0 4px 10px rgba(15,26,44,.15)}
+.prod-id{display:flex;align-items:center;gap:14px}
+.prod-id .appicon{box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.hs-tab .tabicon{border-radius:8px;box-shadow:none;opacity:.85}
+.hs-tab[aria-selected="true"] .tabicon{opacity:1}
+footer.site a.fsoft{display:inline-flex;align-items:center;gap:9px}
+footer.site .fsoft .appicon{box-shadow:none;border-radius:6px}
+
 /* Blog */
 .post{display:flex;flex-direction:column;gap:14px;font-size:1.05rem}
 .post h2{font-size:1.45rem;margin-top:22px}

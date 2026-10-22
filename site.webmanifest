@@ -1,0 +1,26 @@
+{
+ "name": "Soft2Cloud",
+ "short_name": "Soft2Cloud",
+ "description": "Business software and free tools for Pakistan",
+ "start_url": "/",
+ "display": "standalone",
+ "background_color": "#0f1a2c",
+ "theme_color": "#0f1a2c",
+ "icons": [
+  {
+   "src": "/assets/icons/png/soft2cloud-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/assets/icons/png/soft2cloud-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "/assets/icons/soft2cloud.svg",
+   "sizes": "any",
+   "type": "image/svg+xml"
+  }
+ ]
+}
