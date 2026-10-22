@@ -1,6 +1,8 @@
 # soft2cloud.com
 
-Company website of Soft2Cloud, Lahore. Served free by GitHub Pages at https://soft2cloud.com/.
-Live demos of every product: https://demo.soft2cloud.com/
+Company website for Soft2Cloud, served by GitHub Pages at https://soft2cloud.com.
 
-Edit `index.html` to change products, contact details or text. Push to `main` and the site updates in about a minute.
+This folder is generated. Edit the source in `site-src/` (kept in the private backup repo) and run `node build.mjs <this folder>`.
+
+- 46 pages: home, software (7 product pages), 30 free tools, services, about, contact, privacy, terms
+- Live demos: https://demo.soft2cloud.com/
