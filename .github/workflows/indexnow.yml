@@ -1,22 +1,25 @@
 name: IndexNow
 
+# Runs after GitHub Pages has finished publishing, then tells search engines which pages changed.
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["pages-build-deployment"]
+    types: [completed]
   workflow_dispatch:
 
 jobs:
   submit:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Wait for GitHub Pages to publish
-        run: sleep 120
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - name: Submit changed pages to IndexNow
         env:
-          BEFORE: ${{ github.event.before }}
-          AFTER: ${{ github.sha }}
+          AFTER: ${{ github.event.workflow_run.head_sha || github.sha }}
           EVENT: ${{ github.event_name }}
-        run: python3 .github/indexnow.py
+        run: |
+          export BEFORE=$(git rev-parse "$AFTER~1" 2>/dev/null || echo "")
+          python3 .github/indexnow.py
