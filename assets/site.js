@@ -44,6 +44,17 @@
     if (reduce && pauseBtn) pauseBtn.hidden = true;
     schedule();
   }
+  /* Product page screen slider */
+  [].forEach.call(document.querySelectorAll('[data-ps]'), function (ps) {
+    var imgs = [].slice.call(ps.querySelectorAll('.ps-img')), dots = [].slice.call(ps.querySelectorAll('.ps-dot')), cap = ps.querySelector('.ps-cap'), k = 0, t = null, hov = false;
+    if (imgs.length < 2) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function go(n) { k = (n + imgs.length) % imgs.length; imgs.forEach(function (im, i) { im.classList.toggle('is-on', i === k); if (i === k) im.loading = 'eager'; }); dots.forEach(function (d, i) { d.setAttribute('aria-pressed', i === k ? 'true' : 'false'); }); if (cap) cap.textContent = dots[k].getAttribute('aria-label'); plan(); }
+    function plan() { clearTimeout(t); if (!hov && !reduce) t = setTimeout(function () { go(k + 1); }, 5000); }
+    dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); }); });
+    ps.addEventListener('mouseenter', function () { hov = true; plan(); }); ps.addEventListener('mouseleave', function () { hov = false; plan(); });
+    plan();
+  });
   window.S2C = window.S2C || {};
   S2C.toast = function (msg) {
     var t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;

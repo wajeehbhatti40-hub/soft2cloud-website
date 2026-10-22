@@ -336,6 +336,33 @@ tr:last-child td{border-bottom:0}
 footer.site a.fsoft{display:inline-flex;align-items:center;gap:9px}
 footer.site .fsoft .appicon{box-shadow:none;border-radius:6px}
 
+/* Product page screen slider */
+.ps{position:relative}
+.ps .hs-visual{padding:10px 34px 34px 0}
+.ps-imgs{position:relative;aspect-ratio:16/10;background:#fff}
+.ps-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;opacity:0;transition:opacity .6s ease}
+.ps-img.is-on{opacity:1}
+.ps-dots{display:flex;align-items:center;gap:8px;margin-top:4px;min-height:24px}
+.ps-dot{width:28px;height:6px;border-radius:6px;border:0;background:rgba(255,255,255,.3);cursor:pointer;padding:0}
+.ps-dot[aria-pressed="true"]{background:#9db8ff;width:44px}
+.ps-cap{margin-left:10px;color:#c9d3e4;font-size:.86rem}
+/* Banners with artwork */
+.art-hero{position:relative;overflow:hidden}
+.art-hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:40px 40px;-webkit-mask-image:radial-gradient(ellipse at 80% 50%,#000 20%,transparent 70%);mask-image:radial-gradient(ellipse at 80% 50%,#000 20%,transparent 70%);pointer-events:none}
+.art-hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center}
+.hero-copy{min-width:0}
+.tool-badge{width:150px;height:150px;border-radius:34px;display:grid;place-items:center;background:linear-gradient(140deg,#2f63ef,#1f4fd1 55%,#16306e);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.2);color:#fff;transform:rotate(-4deg)}
+.tool-badge svg{width:74px;height:74px;stroke-width:1.6}
+.hero-ill{width:400px;max-width:38vw;height:auto}
+/* Blog covers */
+.post-card{padding:0;overflow:hidden}
+.post-card > *:not(.post-cover){margin-left:22px;margin-right:22px}
+.post-card > .tag{margin-top:4px}
+.post-card > :last-child{margin-bottom:22px}
+.post-cover{width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover;border-bottom:1px solid var(--line)}
+.post-hero-img{width:100%;height:auto;border-radius:16px;border:1px solid var(--line);margin-bottom:10px}
+@media (max-width:760px){.art-hero .wrap{grid-template-columns:minmax(0,1fr)}.tool-badge,.hero-ill{display:none}.ps .hs-visual{padding:6px 18px 24px 0}}
+
 /* Blog */
 .post{display:flex;flex-direction:column;gap:14px;font-size:1.05rem}
 .post h2{font-size:1.45rem;margin-top:22px}
