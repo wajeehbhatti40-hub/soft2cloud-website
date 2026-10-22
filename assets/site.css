@@ -196,6 +196,30 @@ tr:last-child td{border-bottom:0}
 .items-ed .it{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr) minmax(0,1.3fr) auto;gap:8px}
 .x{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;width:38px;cursor:pointer;font-size:1.1rem}
 
+/* Blog */
+.post{display:flex;flex-direction:column;gap:14px;font-size:1.05rem}
+.post h2{font-size:1.45rem;margin-top:22px}
+.post p,.post li{color:var(--muted)}
+.post ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.post .ticks{font-size:1rem}
+.tipbox{display:flex;gap:12px;align-items:flex-start;background:var(--sun-soft);border-radius:14px;padding:16px 18px;margin-top:10px}
+.tipbox p{color:var(--ink)}
+
+/* Urdu pages */
+.ur{font-family:"Noto Nastaliq Urdu",var(--body);line-height:2.1}
+.ur h1,.ur h2,.ur h3{font-family:"Noto Nastaliq Urdu",var(--display);line-height:1.8;letter-spacing:0;font-weight:700}
+.ur h1{font-size:clamp(1.8rem,4vw,2.6rem)}
+.ur .eyebrow{letter-spacing:.04em}
+.ur input,.ur select,.ur textarea{font-family:var(--body)}
+.ur input[type=number]{direction:ltr;text-align:right}
+.ur .result b,.ur td.r,.ur .formula{direction:ltr;unicode-bidi:plaintext;text-align:right}
+.ur .result span{font-size:.85rem}
+.ur .article ol{padding-left:0;padding-right:22px}
+.ur .faq summary::after{margin-right:auto}
+.ur .ticks li::before{margin-top:10px}
+.ur .side a.rel{line-height:1.9}
+.ur .tool-app{line-height:1.9}
+
 /* Team */
 .avatar{width:64px;height:64px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--av,#1f4fd1);color:#fff;font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:.02em;object-fit:cover;box-shadow:inset 0 0 0 3px rgba(255,255,255,.18)}
 .avatar.big{width:120px;height:120px;font-size:2.4rem}

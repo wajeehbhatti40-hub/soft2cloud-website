@@ -16,18 +16,48 @@
   function copy(t) { if (window.S2C && S2C.copy) S2C.copy(t); }
   function download(name, blob) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
 
+  /* Urdu labels for pages with <html lang="ur"> */
+  var UR = document.documentElement.lang === 'ur';
+  var DICT = {
+    'Amount (Rs)': 'رقم (روپے)', 'Sales tax rate (%)': 'سیلز ٹیکس کی شرح (%)', 'Amount is': 'رقم', 'Before tax (add GST)': 'ٹیکس کے بغیر (جی ایس ٹی شامل کریں)', 'Including tax (remove GST)': 'ٹیکس سمیت (جی ایس ٹی نکالیں)',
+    'Amount before tax': 'ٹیکس سے پہلے رقم', 'Total with tax': 'ٹیکس سمیت کل رقم',
+    'Loan amount (Rs)': 'قرض کی رقم (روپے)', 'Interest / markup rate (% per year)': 'سود / مارک اپ کی شرح (% سالانہ)', 'Tenure': 'مدت', 'Tenure in': 'مدت بحساب', 'Years': 'سال', 'Months': 'مہینے',
+    'Monthly instalment (EMI)': 'ماہانہ قسط', 'Total interest': 'کل سود', 'Total payment': 'کل ادائیگی', 'Repayment schedule by year': 'سال بہ سال ادائیگی کا شیڈول', 'Year': 'سال', 'Principal paid': 'اصل رقم ادا', 'Interest paid': 'سود ادا', 'Balance left': 'باقی رقم',
+    'Value': 'مقدار', 'Unit': 'یونٹ', 'Marla': 'مرلہ', 'Kanal': 'کنال', 'Acre': 'ایکڑ', 'Square feet': 'مربع فٹ', 'Square yards (gaz)': 'مربع گز', 'Square yards': 'مربع گز', 'Square metres': 'مربع میٹر', 'Hectare': 'ہیکٹر', 'Murabba (25 acres)': 'مربع (25 ایکڑ)', '1 marla equals': '1 مرلہ برابر ہے',
+    '225 sq ft (most housing societies, e.g. DHA Lahore)': '225 مربع فٹ (زیادہ تر ہاؤسنگ سوسائٹیاں، جیسے ڈی ایچ اے لاہور)', '250 sq ft (some societies)': '250 مربع فٹ (کچھ سوسائٹیاں)', '272.25 sq ft (revenue / old record)': '272.25 مربع فٹ (ریونیو / پرانا ریکارڈ)',
+    'Gold rate, 24k (Rs per tola)': 'سونے کا ریٹ، 24 قیراط (روپے فی تولہ)', 'Karat': 'قیراط', 'Weight': 'وزن', 'Weight in': 'وزن بحساب', 'Tola': 'تولہ', 'Grams': 'گرام', 'Masha': 'ماشہ', 'Ratti': 'رتی', 'Making charges': 'بنوائی', 'Making charged as': 'بنوائی کا حساب', '% of gold value': 'سونے کی قیمت کا %', 'Rs per tola': 'روپے فی تولہ', 'Fixed Rs': 'مقررہ رقم', 'Gold value': 'سونے کی قیمت', 'Total price': 'کل قیمت',
+    'Cash in hand (Rs)': 'ہاتھ میں نقدی (روپے)', 'Bank and wallet balances (Rs)': 'بینک اور والٹ بیلنس (روپے)', 'Gold you own': 'آپ کا سونا', 'Gold weight in': 'سونے کا وزن بحساب', 'Gold karat': 'سونے کا قیراط', 'Silver you own (tola)': 'آپ کی چاندی (تولہ)', 'Silver rate (Rs per tola)': 'چاندی کا ریٹ (روپے فی تولہ)', 'Business stock at sale value (Rs)': 'کاروباری مال، فروخت کی قیمت پر (روپے)', 'Money others owe you, likely to be repaid (Rs)': 'دوسروں کے ذمے آپ کی رقم جو ملنے کی امید ہو (روپے)', 'Shares, funds, savings certificates (Rs)': 'شیئرز، فنڈز، بچت سرٹیفکیٹ (روپے)', 'Debts and bills due now (Rs)': 'فوری واجب قرض اور بل (روپے)', 'Nisab rule': 'نصاب کا اصول',
+    'Automatic — gold only: 7.5 tola gold; anything else: 52.5 tola silver (Hanafi)': 'Automatic — صرف سونا: 7.5 تولہ سونا؛ باقی سب: 52.5 تولہ چاندی (حنفی)', 'Always silver — 52.5 tola': 'ہمیشہ چاندی — 52.5 تولہ', 'Always gold — 7.5 tola': 'ہمیشہ سونا — 7.5 تولہ',
+    'Net zakatable wealth': 'قابلِ زکوٰۃ خالص مال', 'Zakat due (2.5%)': 'واجب زکوٰۃ (2.5%)', 'Enter rates': 'ریٹ لکھیں', 'Today\'s rate': 'آج کا ریٹ', 'Not due': 'واجب نہیں', 'Asset': 'مال', 'Cash and bank': 'نقدی اور بینک', 'Business stock': 'کاروباری مال', 'Money owed to you': 'دوسروں کے ذمے رقم', 'Investments': 'سرمایہ کاری', 'Less debts due now': 'منہا: فوری واجب قرض',
+    'Enter the gold rate so your gold is counted.': 'سونے کا ریٹ لکھیں تاکہ آپ کا سونا شمار ہو۔', 'Enter the silver rate so your silver is counted.': 'چاندی کا ریٹ لکھیں تاکہ آپ کی چاندی شمار ہو۔',
+    'Enter today\'s gold rate per tola — the nisab is 7.5 tola of gold.': 'آج کا سونے کا فی تولہ ریٹ لکھیں — نصاب 7.5 تولہ سونا ہے۔', 'Enter today\'s silver rate per tola — the nisab is 52.5 tola of silver.': 'آج کا چاندی کا فی تولہ ریٹ لکھیں — نصاب 52.5 تولہ چاندی ہے۔',
+    'Rates were filled in automatically from international prices (approximate). Your local sarafa rate may be higher — replace them with today\'s local rate for an exact figure.': 'ریٹ بین الاقوامی قیمت سے خود بھر دیے گئے ہیں (اندازاً)۔ مقامی صرافہ ریٹ زیادہ ہو سکتا ہے — درست حساب کے لیے آج کا مقامی ریٹ لکھیں۔',
+    'Your net wealth is below the nisab, so zakat is not due on this calculation.': 'آپ کا خالص مال نصاب سے کم ہے، اس لیے اس حساب سے زکوٰۃ واجب نہیں۔',
+    'Enter today\'s 24k rate per tola from your jeweller or the sarafa association.': 'اپنے جیولر یا صرافہ ایسوسی ایشن سے آج کا 24 قیراط فی تولہ ریٹ لکھیں۔'
+  };
+  var PAT = [
+    [/^GST \((.+)\)$/, 'جی ایس ٹی ($1)'], [/^Year (\d+)$/, 'سال $1'], [/^(\d+)k rate per tola$/, '$1 قیراط ریٹ فی تولہ'], [/^(\d+)k rate per gram$/, '$1 قیراط ریٹ فی گرام'],
+    [/^Nisab \(7\.5 tola gold\)$/, 'نصاب (7.5 تولہ سونا)'], [/^Nisab \(52\.5 tola silver\)$/, 'نصاب (52.5 تولہ چاندی)'], [/^Gold \(([\d.,]+) tola, (\d+)k\)$/, 'سونا ($1 تولہ، $2 قیراط)'], [/^Silver \(([\d.,]+) tola\)$/, 'چاندی ($1 تولہ)']
+  ];
+  function L(s) {
+    if (!UR || s == null) return s; s = String(s);
+    if (DICT.hasOwnProperty(s)) return DICT[s];
+    for (var i = 0; i < PAT.length; i++) if (PAT[i][0].test(s)) return s.replace(PAT[i][0], PAT[i][1]);
+    return s;
+  }
+
   /* ---------- generic calculator form ---------- */
   function field(f) {
     var id = 'f-' + f.id, cls = 'f' + (f.full ? ' full' : '');
-    if (f.type === 'select') return '<label class="' + cls + '">' + esc(f.label) + '<select id="' + id + '" name="' + f.id + '">' + f.options.map(function (o) { var v = Array.isArray(o) ? o[0] : o, l = Array.isArray(o) ? o[1] : o; return '<option value="' + esc(v) + '"' + (String(v) === String(f.value) ? ' selected' : '') + '>' + esc(l) + '</option>'; }).join('') + '</select></label>';
-    if (f.type === 'check') return '<label class="check' + (f.full ? ' full' : '') + '"><input type="checkbox" id="' + id + '" name="' + f.id + '"' + (f.value ? ' checked' : '') + '> ' + esc(f.label) + '</label>';
-    if (f.type === 'textarea') return '<label class="' + cls + '">' + esc(f.label) + '<textarea id="' + id + '" name="' + f.id + '" placeholder="' + esc(f.ph || '') + '">' + esc(f.value || '') + '</textarea></label>';
+    if (f.type === 'select') return '<label class="' + cls + '">' + esc(L(f.label)) + '<select id="' + id + '" name="' + f.id + '">' + f.options.map(function (o) { var v = Array.isArray(o) ? o[0] : o, l = Array.isArray(o) ? o[1] : o; return '<option value="' + esc(v) + '"' + (String(v) === String(f.value) ? ' selected' : '') + '>' + esc(L(l)) + '</option>'; }).join('') + '</select></label>';
+    if (f.type === 'check') return '<label class="check' + (f.full ? ' full' : '') + '"><input type="checkbox" id="' + id + '" name="' + f.id + '"' + (f.value ? ' checked' : '') + '> ' + esc(L(f.label)) + '</label>';
+    if (f.type === 'textarea') return '<label class="' + cls + '">' + esc(L(f.label)) + '<textarea id="' + id + '" name="' + f.id + '" placeholder="' + esc(f.ph || '') + '">' + esc(f.value || '') + '</textarea></label>';
     var t = f.type || 'number';
-    return '<label class="' + cls + '">' + esc(f.label) + '<input id="' + id + '" name="' + f.id + '" type="' + t + '"' + (t === 'number' ? ' inputmode="decimal" step="' + (f.step || 'any') + '"' + (f.min != null ? ' min="' + f.min + '"' : '') : '') + ' value="' + esc(f.value == null ? '' : f.value) + '" placeholder="' + esc(f.ph || '') + '"></label>';
+    return '<label class="' + cls + '">' + esc(L(f.label)) + '<input id="' + id + '" name="' + f.id + '" type="' + t + '"' + (t === 'number' ? ' inputmode="decimal" step="' + (f.step || 'any') + '"' + (f.min != null ? ' min="' + f.min + '"' : '') : '') + ' value="' + esc(f.value == null ? '' : f.value) + '" placeholder="' + esc(L(f.ph || '')) + '"></label>';
   }
   function calc(el, spec) {
     el.innerHTML = '<div class="fgrid' + (spec.cols === 3 ? ' three' : '') + '">' + spec.fields.map(field).join('') + '</div>' +
-      '<div class="result" aria-live="polite"></div><div class="extra"></div>' + (spec.note ? '<p class="note">' + spec.note + '</p>' : '');
+      '<div class="result" aria-live="polite"></div><div class="extra"></div>' + (spec.note ? '<p class="note">' + ((UR && spec.noteUr) || spec.note) + '</p>' : '');
     var res = $('.result', el), extra = $('.extra', el);
     function read() {
       var v = {};
@@ -36,7 +66,7 @@
     }
     function run() {
       var out = spec.compute(read(), el) || {};
-      res.innerHTML = (out.results || []).map(function (r) { return '<div' + (r[2] ? ' class="big"' : '') + '><span>' + esc(r[0]) + '</span><b>' + esc(r[1]) + '</b></div>'; }).join('');
+      res.innerHTML = (out.results || []).map(function (r) { return '<div' + (r[2] ? ' class="big"' : '') + '><span>' + esc(L(r[0])) + '</span><b>' + esc(L(r[1])) + '</b></div>'; }).join('');
       res.hidden = !(out.results && out.results.length);
       extra.innerHTML = out.extra || '';
     }
@@ -47,8 +77,8 @@
   }
   function table(head, rows, rightFrom) {
     rightFrom = rightFrom == null ? 1 : rightFrom;
-    return '<div class="tbl"><table><thead><tr>' + head.map(function (h, i) { return '<th' + (i >= rightFrom ? ' class="r"' : '') + '>' + esc(h) + '</th>'; }).join('') + '</tr></thead><tbody>' +
-      rows.map(function (r) { return '<tr>' + r.map(function (c, i) { return '<td' + (i >= rightFrom ? ' class="r"' : '') + '>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+    return '<div class="tbl"><table><thead><tr>' + head.map(function (h, i) { return '<th' + (i >= rightFrom ? ' class="r"' : '') + '>' + esc(L(h)) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr>' + r.map(function (c, i) { return '<td' + (i >= rightFrom ? ' class="r"' : '') + '>' + esc(L(c)) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
   }
 
   /* ================= BUSINESS ================= */
@@ -64,6 +94,7 @@
         if (v.mode === 'ex') { net = v.amt; tax = net * r; gross = net + tax; } else { gross = v.amt; net = gross / (1 + r); tax = gross - net; }
         return { results: [['Amount before tax', rs(net, 2)], ['GST (' + fmt(v.rate) + '%)', rs(tax, 2)], ['Total with tax', rs(gross, 2), true]] };
       },
+      noteUr: 'پاکستان میں زیادہ تر اشیاء پر عام سیلز ٹیکس 18% ہے، مگر کچھ اشیاء اور صوبائی سروسز پر شرح مختلف ہے۔ تازہ شرح ایف بی آر یا صوبائی ریونیو اتھارٹی سے دیکھیں۔',
       note: 'Standard sales tax in Pakistan is 18% on most goods, but some items and provinces (services) use other rates. Check the current rate with FBR or your provincial revenue authority.'
     });
   };
@@ -134,8 +165,9 @@
         var emi = i ? v.p * i * Math.pow(1 + i, n) / (Math.pow(1 + i, n) - 1) : v.p / n, total = emi * n, rows = [], bal = v.p, yi = 0, yp = 0;
         for (var m = 1; m <= n; m++) { var int = bal * i, pr = emi - int; bal -= pr; yi += int; yp += pr; if (m % 12 === 0 || m === n) { rows.push(['Year ' + Math.ceil(m / 12), rs(yp), rs(yi), rs(Math.max(bal, 0))]); yi = 0; yp = 0; } }
         return { results: [['Monthly instalment (EMI)', rs(emi), true], ['Total interest', rs(total - v.p)], ['Total payment', rs(total)], ['Months', fmt(n, 0)]],
-          extra: '<h3 style="margin:6px 0 10px">Repayment schedule by year</h3>' + table(['Year', 'Principal paid', 'Interest paid', 'Balance left'], rows) };
+          extra: '<h3 style="margin:6px 0 10px">' + L('Repayment schedule by year') + '</h3>' + table(['Year', 'Principal paid', 'Interest paid', 'Balance left'], rows) };
       },
+      noteUr: 'بینک پروسیسنگ فیس، انشورنس یا KIBOR سے جڑی بدلتی شرح بھی لگا سکتے ہیں۔ اسے اندازہ سمجھیں اور حتمی شیڈول بینک سے لیں۔',
       note: 'Banks may add processing fees, insurance or use a different calculation (e.g. KIBOR-linked floating rates). Use this as an estimate and confirm the final schedule with your bank.'
     });
   };
@@ -161,28 +193,74 @@
       }
     });
   };
+  /* Approximate live metal rates in PKR per tola (international spot, not local sarafa rate) */
+  var metalRates = null;
+  function getMetalRates(cb) {
+    if (metalRates) return cb(metalRates);
+    var TOLA_G = 11.6638, OZ_G = 31.1034768;
+    function j(u) { return fetch(u).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }
+    Promise.all([j('https://api.gold-api.com/price/XAU'), j('https://api.gold-api.com/price/XAG'), j('https://open.er-api.com/v6/latest/USD')]).then(function (a) {
+      var pkr = a[2] && a[2].rates && a[2].rates.PKR, g = a[0] && +a[0].price, s = a[1] && +a[1].price;
+      if (!pkr || !g || !s) throw 0;
+      metalRates = { gold: Math.round(g / OZ_G * TOLA_G * pkr), silver: Math.round(s / OZ_G * TOLA_G * pkr) };
+      cb(metalRates);
+    }).catch(function () { cb(null); });
+  }
+  T._metalRates = getMetalRates;
   T['zakat-calculator'] = function (el) {
-    calc(el, {
+    var auto = { grate: false, srate: false };
+    var run = calc(el, {
       fields: [
-        { id: 'cash', label: 'Cash in hand and bank (Rs)', value: 300000 },
-        { id: 'gold', label: 'Gold you own (tola)', value: 2 },
-        { id: 'grate', label: 'Gold rate (Rs per tola, 24k)', value: 0, ph: 'Enter today\'s rate' },
+        { id: 'cash', label: 'Cash in hand (Rs)', value: 0 },
+        { id: 'bank', label: 'Bank and wallet balances (Rs)', value: 0 },
+        { id: 'gold', label: 'Gold you own', value: 0 },
+        { id: 'gu', label: 'Gold weight in', type: 'select', value: 'tola', options: [['tola', 'Tola'], ['g', 'Grams']] },
+        { id: 'gk', label: 'Gold karat', type: 'select', value: '22', options: [['24', '24k'], ['22', '22k'], ['21', '21k'], ['18', '18k']] },
+        { id: 'grate', label: 'Gold rate, 24k (Rs per tola)', value: '', ph: 'Today\'s rate' },
         { id: 'silver', label: 'Silver you own (tola)', value: 0 },
-        { id: 'srate', label: 'Silver rate (Rs per tola)', value: 0, ph: 'Enter today\'s rate' },
+        { id: 'srate', label: 'Silver rate (Rs per tola)', value: '', ph: 'Today\'s rate' },
         { id: 'stock', label: 'Business stock at sale value (Rs)', value: 0 },
-        { id: 'recv', label: 'Money others owe you (Rs)', value: 0 },
-        { id: 'inv', label: 'Shares, savings certificates, etc. (Rs)', value: 0 },
+        { id: 'recv', label: 'Money others owe you, likely to be repaid (Rs)', value: 0 },
+        { id: 'inv', label: 'Shares, funds, savings certificates (Rs)', value: 0 },
         { id: 'debt', label: 'Debts and bills due now (Rs)', value: 0 },
-        { id: 'nisab', label: 'Nisab based on', type: 'select', value: 'silver', options: [['silver', 'Silver — 52.5 tola (common view)'], ['gold', 'Gold — 7.5 tola']] }
+        { id: 'nisab', label: 'Nisab rule', type: 'select', value: 'auto', full: true, options: [['auto', 'Automatic — gold only: 7.5 tola gold; anything else: 52.5 tola silver (Hanafi)'], ['silver', 'Always silver — 52.5 tola'], ['gold', 'Always gold — 7.5 tola']] }
       ],
       compute: function (v) {
-        var total = v.cash + v.gold * v.grate + v.silver * v.srate + v.stock + v.recv + v.inv, net = total - v.debt,
-          nisab = v.nisab === 'silver' ? 52.5 * v.srate : 7.5 * v.grate, due = nisab > 0 && net >= nisab;
-        var msg = nisab > 0 ? '' : '<p class="warn">Enter today\'s ' + v.nisab + ' rate to work out the nisab.</p>';
-        if ((v.gold && !v.grate) || (v.silver && !v.srate)) msg += '<p class="warn">Enter the gold and silver rates so their value is counted.</p>';
-        return { results: [['Total zakatable wealth', rs(total)], ['After debts', rs(net)], ['Nisab', nisab ? rs(nisab) : '—'], ['Zakat due (2.5%)', due ? rs(net * 0.025) : 'Rs 0', true]], extra: msg + (nisab && !due ? '<p class="note">Your net wealth is below the nisab, so zakat is not due on this calculation.</p>' : '') };
+        var gTola = v.gu === 'g' ? v.gold / 11.6638 : v.gold, gVal = gTola * v.grate * num(v.gk) / 24, sVal = v.silver * v.srate;
+        var other = v.cash + v.bank + v.stock + v.recv + v.inv;
+        var total = other + gVal + sVal, net = total - v.debt;
+        var goldOnly = gTola > 0 && !other && !v.silver;
+        var basis = v.nisab === 'auto' ? (goldOnly ? 'gold' : 'silver') : v.nisab;
+        // gold-only: nisab is 7.5 tola of the same gold, so value it at the same karat
+        var nisab = basis === 'gold' ? 7.5 * v.grate * (goldOnly ? num(v.gk) / 24 : 1) : 52.5 * v.srate;
+        var msgs = [];
+        if (gTola > 0 && !v.grate) msgs.push('Enter the gold rate so your gold is counted.');
+        if (v.silver > 0 && !v.srate) msgs.push('Enter the silver rate so your silver is counted.');
+        if (!nisab) msgs.push('Enter today\'s ' + basis + ' rate per tola — the nisab is ' + (basis === 'gold' ? '7.5 tola of gold' : '52.5 tola of silver') + '.');
+        if (auto.grate || auto.srate) msgs.push('Rates were filled in automatically from international prices (approximate). Your local sarafa rate may be higher — replace them with today\'s local rate for an exact figure.');
+        var ready = nisab > 0 && !(gTola > 0 && !v.grate) && !(v.silver > 0 && !v.srate);
+        var due = ready && net >= nisab, zakat = due ? net * 0.025 : 0;
+        var rows = [['Cash and bank', rs(v.cash + v.bank)], ['Gold (' + fmt(gTola, 3) + ' tola, ' + v.gk + 'k)', v.grate ? rs(gVal) : '—'], ['Silver (' + fmt(v.silver, 3) + ' tola)', v.srate || !v.silver ? rs(sVal) : '—'], ['Business stock', rs(v.stock)], ['Money owed to you', rs(v.recv)], ['Investments', rs(v.inv)], ['Less debts due now', '− ' + rs(v.debt)], ['Net zakatable wealth', rs(net)]];
+        return {
+          results: [['Net zakatable wealth', rs(net)], ['Nisab (' + (basis === 'gold' ? '7.5 tola gold' : '52.5 tola silver') + ')', nisab ? rs(nisab) : '—'], ['Zakat due (2.5%)', !ready ? 'Enter rates' : due ? rs(zakat) : 'Not due', true]],
+          extra: (msgs.length ? '<div class="warn">' + msgs.map(function (m) { return esc(L(m)); }).join('<br>') + '</div>' : '') +
+            (ready && !due ? '<p class="note">' + L('Your net wealth is below the nisab, so zakat is not due on this calculation.') + '</p>' : '') +
+            (ready && due ? '<p class="note">' + (UR ? 'خالص مال ' + rs(net) + ' پر <b>' + rs(zakat) + '</b> زکوٰۃ واجب ہے۔' : 'Zakat of <b>' + rs(zakat) + '</b> is due on net wealth of ' + rs(net) + '.') + '</p>' : '') +
+            table(['Asset', 'Value'], rows)
+        };
       },
-      note: 'Zakat is due on wealth held for one lunar year. Rules differ for things like jewellery in use, business assets and loans — please confirm with a scholar you trust. This tool is a helper, not a fatwa.'
+      after: function (el, run) {
+        ['grate', 'srate'].forEach(function (k) { $('#f-' + k, el).addEventListener('input', function () { auto[k] = false; }); });
+        getMetalRates(function (r) {
+          if (!r) return;
+          var g = $('#f-grate', el), s = $('#f-srate', el);
+          if (!g.value) { g.value = r.gold; auto.grate = true; }
+          if (!s.value) { s.value = r.silver; auto.srate = true; }
+          run();
+        });
+      },
+      noteUr: 'زکوٰۃ اس مال پر واجب ہے جس پر ایک قمری سال گزر جائے۔ استعمال کے زیور، کاروباری اثاثوں اور قرض کے بارے میں علماء کی آراء مختلف ہیں — کسی مستند عالم سے تصدیق کر لیں۔ یہ ٹول مدد کے لیے ہے، فتویٰ نہیں۔',
+      note: 'Zakat is due on wealth held for one lunar year. Scholars differ on jewellery in use, business assets and loans — please confirm with a scholar you trust. This tool is a helper, not a fatwa.'
     });
   };
   T['committee-calculator'] = function (el) {
@@ -366,20 +444,24 @@
       compute: function (v) {
         var M = num(v.basis), U = { sqft: 1, sqyd: 9, sqm: 10.7639104, marla: M, kanal: 20 * M, acre: 43560, hectare: 107639.104, murabba: 25 * 43560 }, ft = v.v * U[v.u];
         var list = [['Marla', ft / U.marla], ['Kanal', ft / U.kanal], ['Square feet', ft], ['Square yards', ft / 9], ['Square metres', ft / U.sqm], ['Acre', ft / U.acre], ['Hectare', ft / U.hectare]];
-        return { results: list.map(function (r, i) { return [r[0], fmt(r[1], 4), i === 0]; }), extra: '<p class="note">1 kanal = 20 marla = ' + fmt(20 * M) + ' sq ft with your marla size. 1 acre = 43,560 sq ft' + (M === 272.25 ? ' = 8 kanal' : ' (≈ ' + fmt(43560 / (20 * M), 2) + ' kanal at this marla size)') + '.</p>' };
+        return { results: list.map(function (r, i) { return [r[0], fmt(r[1], 4), i === 0]; }), extra: '<p class="note">' + (UR ? 'آپ کے مرلے کے حساب سے 1 کنال = 20 مرلہ = ' + fmt(20 * M) + ' مربع فٹ۔ 1 ایکڑ = 43,560 مربع فٹ' + (M === 272.25 ? ' = 8 کنال' : ' (اس مرلے سے تقریباً ' + fmt(43560 / (20 * M), 2) + ' کنال)') + '۔' : '1 kanal = 20 marla = ' + fmt(20 * M) + ' sq ft with your marla size. 1 acre = 43,560 sq ft' + (M === 272.25 ? ' = 8 kanal' : ' (≈ ' + fmt(43560 / (20 * M), 2) + ' kanal at this marla size)') + '.') + '</p>' };
       },
+      noteUr: 'مرلے کا سائز ہر جگہ ایک جیسا نہیں۔ اپنی پلاٹ فائل یا رجسٹری میں لکھا سائز ضرور دیکھیں۔',
       note: 'Marla size is not the same everywhere. Always confirm the size written in your plot file or registry.'
     });
   };
   T['gold-price-calculator'] = function (el) {
     calc(el, {
-      fields: [{ id: 'rate', label: 'Gold rate, 24k (Rs per tola)', value: 0, ph: 'Today\'s rate' }, { id: 'k', label: 'Karat', type: 'select', value: '22', options: [['24', '24k (99.9%)'], ['22', '22k (91.6%)'], ['21', '21k (87.5%)'], ['18', '18k (75%)']] }, { id: 'w', label: 'Weight', value: 1 }, { id: 'wu', label: 'Weight in', type: 'select', value: 'tola', options: [['tola', 'Tola'], ['g', 'Grams'], ['masha', 'Masha'], ['ratti', 'Ratti']] }, { id: 'mk', label: 'Making charges', value: 0 }, { id: 'mku', label: 'Making charged as', type: 'select', value: 'pct', options: [['pct', '% of gold value'], ['tola', 'Rs per tola'], ['fixed', 'Fixed Rs']] }],
+      fields: [{ id: 'rate', label: 'Gold rate, 24k (Rs per tola)', value: '', ph: 'Today\'s rate' }, { id: 'k', label: 'Karat', type: 'select', value: '22', options: [['24', '24k (99.9%)'], ['22', '22k (91.6%)'], ['21', '21k (87.5%)'], ['18', '18k (75%)']] }, { id: 'w', label: 'Weight', value: 1 }, { id: 'wu', label: 'Weight in', type: 'select', value: 'tola', options: [['tola', 'Tola'], ['g', 'Grams'], ['masha', 'Masha'], ['ratti', 'Ratti']] }, { id: 'mk', label: 'Making charges', value: 0 }, { id: 'mku', label: 'Making charged as', type: 'select', value: 'pct', options: [['pct', '% of gold value'], ['tola', 'Rs per tola'], ['fixed', 'Fixed Rs']] }],
       compute: function (v) {
         var TOLA = 11.6638, g = { tola: TOLA, g: 1, masha: TOLA / 12, ratti: TOLA / 96 }[v.wu] * v.w, tola = g / TOLA, k = num(v.k);
-        if (!v.rate) return { results: [['Weight', fmt(g, 3) + ' g · ' + fmt(tola, 4) + ' tola']], extra: '<p class="warn">Enter today\'s 24k rate per tola from your jeweller or the sarafa association.</p>' };
+        if (!v.rate) return { results: [['Weight', fmt(g, 3) + ' g · ' + fmt(tola, 4) + ' tola']], extra: '<p class="warn">' + L('Enter today\'s 24k rate per tola from your jeweller or the sarafa association.') + '</p>' };
         var r = v.rate * k / 24, val = r * tola, mk = v.mku === 'pct' ? val * v.mk / 100 : v.mku === 'tola' ? v.mk * tola : v.mk;
-        return { results: [[k + 'k rate per tola', rs(r)], [k + 'k rate per gram', rs(r / TOLA, 2)], ['Weight', fmt(g, 3) + ' g · ' + fmt(tola, 4) + ' tola'], ['Gold value', rs(val)], ['Making charges', rs(mk)], ['Total price', rs(val + mk), true]] };
+        var autoNote = el._autoRate && UR ? '<p class="warn">ریٹ بین الاقوامی قیمت سے خود بھر دیا گیا ہے (اندازاً)۔ مقامی صرافہ ریٹ عموماً زیادہ ہوتا ہے — درست قیمت کے لیے آج کا مقامی ریٹ لکھیں۔</p>' : el._autoRate ? '<p class="warn">The rate was filled in automatically from the international gold price (approximate). Local sarafa rates are often higher — type today\'s local rate for an exact price.</p>' : '';
+        return { extra: autoNote, results: [[k + 'k rate per tola', rs(r)], [k + 'k rate per gram', rs(r / TOLA, 2)], ['Weight', fmt(g, 3) + ' g · ' + fmt(tola, 4) + ' tola'], ['Gold value', rs(val)], ['Making charges', rs(mk)], ['Total price', rs(val + mk), true]] };
       },
+      after: function (el, run) { $('#f-rate', el).addEventListener('input', function () { el._autoRate = false; }); getMetalRates(function (r) { var g = $('#f-rate', el); if (r && !g.value) { g.value = r.gold; el._autoRate = true; run(); } }); },
+      noteUr: '1 تولہ = 11.6638 گرام = 12 ماشہ = 96 رتی۔ جیولر واپس خریدتے وقت کاٹ نکالتے ہیں، اس لیے فروخت کی قیمت عموماً کم ملتی ہے۔',
       note: '1 tola = 11.6638 grams = 12 masha = 96 ratti. Jewellers may deduct for impurity (“kaat”) when buying back, so the resale price is usually lower.'
     });
   };
@@ -585,6 +667,130 @@
       c.toBlob(function (b) { if (!b) return; blob = b; $('#iv', el).src = URL.createObjectURL(b); $('.result', el).innerHTML = '<div><span>Original</span><b>' + img.naturalWidth + '×' + img.naturalHeight + ' · ' + fmt(img._size / 1024, 0) + ' KB</b></div><div class="big"><span>New</span><b>' + w + '×' + h + ' · ' + fmt(b.size / 1024, 0) + ' KB</b></div>'; }, type, num($('#iq', el).value) / 100);
     }
     $('#id', el).addEventListener('click', function () { if (blob) download(name + '-resized.' + { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' }[$('#it', el).value], blob); });
+  };
+
+  /* ================= NEW PAKISTAN TOOLS ================= */
+  /* Salary income tax — slabs: [upper limit, fixed tax at lower limit, rate above lower limit] */
+  var TAX_SLABS = {
+    '2027': { label: 'Tax year 2027 (July 2026 – June 2027)', surcharge: 0, slabs: [[600000, 0, 0, 0], [1200000, 600000, 0, .01], [2200000, 1200000, 6000, .11], [3200000, 2200000, 116000, .20], [4100000, 3200000, 316000, .25], [5600000, 4100000, 541000, .29], [7000000, 5600000, 976000, .32], [Infinity, 7000000, 1424000, .35]] },
+    '2026': { label: 'Tax year 2026 (July 2025 – June 2026)', surcharge: .09, slabs: [[600000, 0, 0, 0], [1200000, 600000, 0, .01], [2200000, 1200000, 6000, .11], [3200000, 2200000, 116000, .23], [4100000, 3200000, 346000, .30], [Infinity, 4100000, 616000, .35]] }
+  };
+  function salaryTax(income, year) {
+    var y = TAX_SLABS[year], tax = 0, slab = null;
+    for (var i = 0; i < y.slabs.length; i++) { var s = y.slabs[i]; if (income <= s[0]) { slab = s; tax = s[2] + (income - s[1]) * s[3]; break; } }
+    if (income <= 600000) tax = 0;
+    var sur = y.surcharge && income > 10000000 ? tax * y.surcharge : 0;
+    return { tax: Math.max(0, tax), sur: sur, total: Math.max(0, tax) + sur, slab: slab };
+  }
+  T._salaryTax = salaryTax;
+  T['salary-tax-calculator'] = function (el) {
+    calc(el, {
+      fields: [{ id: 'sal', label: 'Salary', value: 150000 }, { id: 'per', label: 'Salary is', type: 'select', value: 'm', options: [['m', 'Per month'], ['y', 'Per year']] }, { id: 'year', label: 'Tax year', type: 'select', value: '2027', options: [['2027', TAX_SLABS['2027'].label], ['2026', TAX_SLABS['2026'].label]], full: true }],
+      compute: function (v) {
+        var yr = v.per === 'm' ? v.sal * 12 : v.sal, r = salaryTax(yr, v.year), eff = yr ? r.total / yr * 100 : 0;
+        var rows = TAX_SLABS[v.year].slabs.map(function (s) { return [(s[1] ? fmt(s[1] + 1, 0) : '0') + ' – ' + (isFinite(s[0]) ? fmt(s[0], 0) : 'above'), s[3] ? fmt(s[3] * 100, 0) + '% above ' + fmt(s[1], 0) + (s[2] ? ' + Rs ' + fmt(s[2], 0) : '') : 'No tax']; });
+        return { results: [['Tax per month', rs(r.total / 12), true], ['Tax per year', rs(r.total)], ['Take-home per month', rs((yr - r.total) / 12)], ['Effective tax rate', pct(eff)]].concat(r.sur ? [['Includes surcharge', rs(r.sur)]] : []),
+          extra: '<h3 style="margin:6px 0 10px">Salary tax slabs — ' + esc(TAX_SLABS[v.year].label) + '</h3>' + table(['Yearly taxable salary (Rs)', 'Tax'], rows) };
+      },
+      note: 'For salaried people (salary is more than 75% of taxable income). Taxable salary may differ from gross pay — for example the tax-exempt part of medical allowance. Rates from the Finance Act 2026 as reported; confirm on fbr.gov.pk.'
+    });
+  };
+
+  /* Electricity bill — NEPRA residential tariff (S.R.O. 279(I)/2026), editable */
+  T['electricity-bill-calculator'] = function (el) {
+    var NP = [[100, 22.44, 275], [200, 28.91, 300], [300, 33.10, 350], [400, 36.46, 400], [500, 38.95, 500], [600, 40.22, 675], [700, 41.85, 675], [Infinity, 47.20, 675]];
+    calc(el, {
+      fields: [{ id: 'u', label: 'Units used this month (kWh)', value: 250 }, { id: 'kw', label: 'Sanctioned load (kW)', value: 2 }, { id: 'cat', label: 'Consumer type', type: 'select', value: 'np', full: true, options: [['np', 'Non-protected (used more than 200 units in any of the last 6 months)'], ['p', 'Protected (200 units or less in each of the last 6 months)'], ['l', 'Lifeline (up to 100 units, load under 1 kW)']] }, { id: 'fpa', label: 'Fuel adjustment this month (Rs per unit, + or −)', value: 0 }, { id: 'gst', label: 'Sales tax (%)', value: 18 }],
+      compute: function (v) {
+        var u = Math.max(0, v.u), energy = 0, fixedRate = 0, how = '', fcs = 0, warn = '';
+        if (v.cat === 'l') {
+          if (u > 100) warn = 'Lifeline only covers up to 100 units — this month will be billed as protected or non-protected.';
+          energy = u * (u <= 50 ? 3.95 : 7.74); how = 'All ' + u + ' units at Rs ' + (u <= 50 ? '3.95' : '7.74');
+        } else if (v.cat === 'p') {
+          if (u > 200) warn = 'Above 200 units you lose protected status for the next 6 months — this bill is shown at protected rates only for comparison.';
+          energy = Math.min(u, 100) * 10.54 + Math.max(0, Math.min(u, 200) - 100) * 13.01 + Math.max(0, u - 200) * 33.10;
+          fixedRate = u <= 100 ? 200 : 300; fcs = u * 1.43; how = 'First 100 units at Rs 10.54, next at Rs 13.01';
+        } else {
+          var s = NP.find(function (x) { return u <= x[0]; }); energy = u * s[1]; fixedRate = s[2]; fcs = u * 3.23;
+          how = 'All ' + u + ' units at Rs ' + s[1] + ' (non-protected bills the whole month at one slab rate)';
+        }
+        var fixed = fixedRate * Math.max(0, v.kw), fpa = u * v.fpa, base = energy + fixed + fcs + fpa, tax = base * v.gst / 100, total = base + tax;
+        return { results: [['Estimated bill', rs(total), true], ['Energy charges', rs(energy)], ['Fixed charges', rs(fixed)], ['FC surcharge', rs(fcs)], ['Fuel adjustment', rs(fpa)], ['Sales tax', rs(tax)], ['Average per unit', u ? 'Rs ' + fmt(total / u, 2) : '—']],
+          extra: (warn ? '<p class="warn">' + esc(warn) + '</p>' : '') + '<p class="note">' + esc(how) + '.</p>' + (v.cat === 'np' && u > 200 && u <= 210 ? '<p class="warn">Just over 200 units costs much more than 200. Keeping usage at 200 or below for 6 months makes you protected again.</p>' : '') };
+      },
+      note: 'Estimate based on the NEPRA residential tariff notified in February 2026 (S.R.O. 279(I)/2026). Your real bill can also include quarterly adjustments, income tax for non-filers on large bills, and arrears. Check the latest rates on your company\'s bill (LESCO, IESCO, MEPCO, FESCO, GEPCO, K-Electric…).'
+    });
+  };
+
+  /* CGPA / GPA */
+  T['cgpa-calculator'] = function (el) {
+    var G = [['A', 4], ['A-', 3.67], ['B+', 3.33], ['B', 3], ['B-', 2.67], ['C+', 2.33], ['C', 2], ['C-', 1.67], ['D+', 1.33], ['D', 1], ['F', 0]];
+    var d = store('cgpa') || { prev: '', prevCr: '', rows: [{ n: 'Course 1', g: 'A', c: 3 }, { n: 'Course 2', g: 'B+', c: 3 }, { n: 'Course 3', g: 'A-', c: 3 }, { n: 'Course 4', g: 'B', c: 2 }] };
+    el.innerHTML = '<h3>This semester</h3><div class="items-ed" id="cr"></div><button type="button" class="btn line sm" id="cadd" style="align-self:flex-start">+ Add course</button>' +
+      '<div class="fgrid"><label class="f">Previous CGPA (optional)<input id="pc" type="number" step="0.01" min="0" max="4" inputmode="decimal"></label><label class="f">Previous credit hours<input id="pcr" type="number" step="1" min="0" inputmode="numeric"></label></div>' +
+      '<div class="result" aria-live="polite"></div><p class="note">Grade points follow the HEC 4.0 scale used by most Pakistani universities. Some universities use slightly different points or grade ranges — check your student handbook.</p>';
+    function draw() { $('#cr', el).innerHTML = d.rows.map(function (r, i) { return '<div class="it" data-i="' + i + '"><input class="inp" data-k="n" value="' + esc(r.n) + '" aria-label="Course name"><select class="inp" data-k="g" aria-label="Grade">' + G.map(function (g) { return '<option value="' + g[0] + '"' + (g[0] === r.g ? ' selected' : '') + '>' + g[0] + ' (' + g[1].toFixed(2) + ')</option>'; }).join('') + '</select><input class="inp" data-k="c" type="number" min="0" step="0.5" inputmode="decimal" value="' + esc(r.c) + '" aria-label="Credit hours"><button type="button" class="x" data-del="' + i + '" aria-label="Remove course">×</button></div>'; }).join(''); }
+    function read() { d.rows = $$('#cr .it', el).map(function (r) { return { n: $('[data-k=n]', r).value, g: $('[data-k=g]', r).value, c: $('[data-k=c]', r).value }; }); d.prev = $('#pc', el).value; d.prevCr = $('#pcr', el).value; store('cgpa', d); }
+    function run() {
+      read(); var pts = 0, cr = 0; d.rows.forEach(function (r) { var gp = G.find(function (g) { return g[0] === r.g; })[1], c = num(r.c); pts += gp * c; cr += c; });
+      var gpa = cr ? pts / cr : 0, pc = num(d.prev), pcr = num(d.prevCr), cg = (cr + pcr) ? (pts + pc * pcr) / (cr + pcr) : 0;
+      $('.result', el).innerHTML = '<div class="big"><span>Semester GPA</span><b>' + gpa.toFixed(2) + '</b></div><div><span>Credit hours</span><b>' + fmt(cr, 1) + '</b></div>' + (pcr ? '<div class="big"><span>New CGPA</span><b>' + cg.toFixed(2) + '</b></div><div><span>Total credit hours</span><b>' + fmt(cr + pcr, 1) + '</b></div>' : '');
+    }
+    el.addEventListener('input', run); el.addEventListener('change', run);
+    el.addEventListener('click', function (e) { var x = e.target.closest('[data-del]'); if (x) { read(); d.rows.splice(+x.dataset.del, 1); if (!d.rows.length) d.rows.push({ n: '', g: 'A', c: 3 }); draw(); run(); } if (e.target.id === 'cadd') { read(); d.rows.push({ n: 'Course ' + (d.rows.length + 1), g: 'A', c: 3 }); draw(); run(); } });
+    draw(); $('#pc', el).value = d.prev; $('#pcr', el).value = d.prevCr; run();
+  };
+
+  /* Property transfer tax — FBR 236K / 236C + provincial stamp duty, editable */
+  T['property-tax-calculator'] = function (el) {
+    calc(el, {
+      fields: [{ id: 'val', label: 'Property value (Rs) — FBR / DC value, whichever is higher', value: 15000000, full: true }, { id: 'bs', label: 'Buyer is', type: 'select', value: 'f', options: [['f', 'Filer (on the Active Taxpayer List)'], ['n', 'Non-filer']] }, { id: 'ss', label: 'Seller is', type: 'select', value: 'f', options: [['f', 'Filer (on the Active Taxpayer List)'], ['n', 'Non-filer']] }, { id: 'stamp', label: 'Stamp duty (%) — Punjab 1%', value: 1 }, { id: 'other', label: 'Other fees: registration, TMA, society transfer (Rs)', value: 0 }],
+      compute: function (v) {
+        var buy = v.bs === 'f' ? 1.25 : v.val <= 50e6 ? 10.5 : v.val <= 100e6 ? 14.5 : 18.5, sell = v.ss === 'f' ? 2.75 : 11.5;
+        var k = v.val * buy / 100, c = v.val * sell / 100, st = v.val * v.stamp / 100, buyerTotal = k + st + v.other;
+        return { results: [['Buyer pays — 236K (' + buy + '%)', rs(k)], ['Stamp duty (' + fmt(v.stamp) + '%)', rs(st)], ['Buyer total', rs(buyerTotal), true], ['Seller pays — 236C (' + sell + '%)', rs(c), true], ['Total government charges', rs(buyerTotal + c)]],
+          extra: (v.bs === 'n' || v.ss === 'n' ? '<p class="warn">Non-filers pay several times more. Becoming a filer before the transfer can save ' + rs((v.bs === 'n' ? v.val * (buy - 1.25) / 100 : 0) + (v.ss === 'n' ? v.val * (11.5 - 2.75) / 100 : 0)) + '.</p>' : '') };
+      },
+      note: 'FBR advance tax rates for tax year 2027 as reported after the Finance Act 2026 (236K buyer, 236C seller). Capital gains tax on the seller is separate. Stamp duty, registration and society fees differ by province and housing society — confirm with the registrar or your society office before paying.'
+    });
+  };
+
+  /* Rent agreement generator */
+  T['rent-agreement-generator'] = function (el) {
+    var K = 'doc-rent', F = [['city', 'City', 'Lahore'], ['date', 'Agreement date', today(), 'date'], ['ll', 'Landlord name', ''], ['llid', 'Landlord CNIC', ''], ['llad', 'Landlord address', ''], ['tn', 'Tenant name', ''], ['tnid', 'Tenant CNIC', ''], ['tnad', 'Tenant permanent address', ''], ['prop', 'Property rented (full address)', ''], ['use', 'Use', 'residential', 'sel'], ['start', 'Start date', today(), 'date'], ['months', 'Term (months)', '11', 'number'], ['rent', 'Monthly rent (Rs)', '50000', 'number'], ['due', 'Rent due by (day of month)', '5', 'number'], ['dep', 'Security deposit (Rs)', '100000', 'number'], ['inc', 'Yearly rent increase (%)', '10', 'number'], ['notice', 'Notice period (months)', '1', 'number'], ['w1', 'Witness 1 (name, CNIC)', ''], ['w2', 'Witness 2 (name, CNIC)', '']];
+    var d = store(K) || {};
+    el.innerHTML = '<div class="fgrid no-print">' + F.map(function (f) { var v = d[f[0]] != null ? d[f[0]] : f[2]; if (f[3] === 'sel') return '<label class="f">' + f[1] + '<select name="' + f[0] + '"><option value="residential"' + (v === 'residential' ? ' selected' : '') + '>Residential (family living)</option><option value="commercial"' + (v === 'commercial' ? ' selected' : '') + '>Commercial (shop / office)</option></select></label>'; return '<label class="f' + (/ad$|prop/.test(f[0]) ? ' full' : '') + '">' + f[1] + '<input name="' + f[0] + '" type="' + (f[3] || 'text') + '" value="' + esc(v) + '"' + (f[3] === 'number' ? ' inputmode="numeric"' : '') + '></label>'; }).join('') + '</div>' +
+      '<div class="row no-print"><button type="button" class="btn blue" id="print">Print / Save as PDF</button><span class="note">Print on stamp paper of the right value and sign in front of the witnesses. This is a general template, not legal advice.</span></div><div class="print-area"><div class="doc-preview" id="pv" style="line-height:1.75"></div></div>';
+    function g(k) { return $('[name=' + k + ']', el).value; }
+    function b(k, alt) { var v = g(k); return '<b>' + esc(v || alt || '__________') + '</b>'; }
+    function dt(k) { var x = D(g(k)); return x ? x.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '__________'; }
+    function render() {
+      F.forEach(function (f) { d[f[0]] = g(f[0]); }); store(K, d);
+      var st = D(g('start')), m = Math.max(1, Math.round(num(g('months')))), end = st ? new Date(st.getFullYear(), st.getMonth() + m, st.getDate() - 1) : null, rent = num(g('rent'));
+      var cl = [
+        'The Landlord hereby lets out to the Tenant the property situated at ' + b('prop') + ' (the “Premises”) for ' + (g('use') === 'commercial' ? 'commercial use as a shop / office' : 'residential use by the Tenant and family only') + '.',
+        'The tenancy is for <b>' + m + ' months</b>, starting on <b>' + dt('start') + '</b> and ending on <b>' + (end ? end.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '__________') + '</b>. It may be renewed by mutual written consent.',
+        'The monthly rent is <b>Rs ' + fmt(rent, 0) + '</b> (' + esc(amountWords(rent, 'pk')) + '), payable in advance on or before the <b>' + esc(g('due') || '5') + '</b> day of each month.',
+        'The Tenant has paid a refundable security deposit of <b>Rs ' + fmt(num(g('dep')), 0) + '</b> (' + esc(amountWords(num(g('dep')), 'pk')) + '). It will be returned when the Premises are vacated, after deducting any unpaid rent, utility bills or the cost of damage beyond normal wear and tear. No interest is payable on it.',
+        'On renewal, the rent will increase by <b>' + esc(g('inc') || '0') + '%</b> unless agreed otherwise in writing.',
+        'The Tenant will pay electricity, gas, water and other utility bills for the tenancy period, and will hand over paid bills on vacating.',
+        'The Tenant will keep the Premises clean and in good condition, will not make structural changes, and will not sublet or transfer the Premises without the Landlord’s written permission.',
+        'The Landlord is responsible for major structural repairs. Minor day-to-day repairs are the Tenant’s responsibility.',
+        'The Tenant will not use the Premises for any illegal or immoral purpose, and will follow the rules of the society / building.',
+        'The Landlord may inspect the Premises at a reasonable time after giving prior notice.',
+        'Either party may end this agreement by giving <b>' + esc(g('notice') || '1') + ' month(s)</b> written notice. If the Tenant fails to pay rent for two consecutive months, the Landlord may end the tenancy and ask the Tenant to vacate.',
+        'The Tenant will register this tenancy with the local police station as required by law, with the Landlord’s help.',
+        'At the end of the tenancy, the Tenant will hand over vacant possession of the Premises with all keys and fittings as received.'
+      ];
+      $('#pv', el).innerHTML = '<h2 style="text-align:center;margin-bottom:6px">TENANCY (RENT) AGREEMENT</h2><p style="text-align:center" class="muted">Made at ' + b('city') + ' on ' + dt('date') + '</p>' +
+        '<p><b>Between:</b> ' + b('ll', 'Landlord name') + ', CNIC ' + b('llid') + ', resident of ' + b('llad') + ' (the “Landlord”)</p><p><b>And:</b> ' + b('tn', 'Tenant name') + ', CNIC ' + b('tnid') + ', resident of ' + b('tnad') + ' (the “Tenant”)</p>' +
+        '<p>The parties agree as follows:</p><ol style="padding-left:22px">' + cl.map(function (c) { return '<li style="margin-bottom:6px">' + c + '</li>'; }).join('') + '</ol>' +
+        '<p style="margin-top:14px">In witness whereof the parties have signed this agreement on the date written above.</p>' +
+        '<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;margin-top:40px"><div style="border-top:1px solid #152033;padding-top:6px">Landlord: ' + esc(g('ll')) + '</div><div style="border-top:1px solid #152033;padding-top:6px">Tenant: ' + esc(g('tn')) + '</div><div style="border-top:1px solid #152033;padding-top:6px;margin-top:20px">Witness 1: ' + esc(g('w1')) + '</div><div style="border-top:1px solid #152033;padding-top:6px;margin-top:20px">Witness 2: ' + esc(g('w2')) + '</div></div>';
+    }
+    el.addEventListener('input', render); el.addEventListener('change', render);
+    $('#print', el).addEventListener('click', function () { window.print(); });
+    render();
   };
 
   /* boot */
