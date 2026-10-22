@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://soft2cloud.com/sitemap.xml
