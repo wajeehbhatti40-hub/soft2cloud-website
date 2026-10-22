@@ -1,7 +1,7 @@
 /* Soft2Cloud site: nav, contact form, tools search. */
 (function () {
   'use strict';
-  var WA = '923147579355', MAIL = 'info@soft2cloud.com';
+  var WA = '923706353528', MAIL = 'info@soft2cloud.com';
   var bar = document.querySelector('.bar'), menu = document.querySelector('.menu');
   if (menu && bar) {
     menu.addEventListener('click', function () {
